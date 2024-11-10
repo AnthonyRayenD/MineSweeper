@@ -5,6 +5,8 @@ package com.minesweeper.model;
  */
 public class Block {
 
+    private String id;
+
     /**
      * Identify whether the Block is a mine or number.
      */
@@ -19,6 +21,29 @@ public class Block {
      * The adjacentMines.
      */
     private int adjacentMines;
+
+    /**
+     * The constructor.
+     *
+     * @param id - the id
+     */
+    public Block(final String id) {
+        this.id = id;
+    }
+
+    /**
+     * @return value of id
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(final String id) {
+        this.id = id;
+    }
 
     /**
      * @return value of isMine
