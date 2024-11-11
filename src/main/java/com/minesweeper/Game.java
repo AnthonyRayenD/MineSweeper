@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class Game {
 
     /**
-     *
+     * The logger.
      */
     private static final Logger logger = LoggerFactory.getLogger(Game.class);
 
