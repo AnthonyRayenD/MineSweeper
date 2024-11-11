@@ -2,6 +2,8 @@ package com.minesweeper;
 
 import com.minesweeper.model.Board;
 import com.minesweeper.service.MineSweeperService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Scanner;
 
@@ -10,48 +12,55 @@ import java.util.Scanner;
  */
 public class Game {
 
+    /**
+     */
+    private static final Logger logger = LoggerFactory.getLogger(Game.class);
+
+    /**
+     * The game status.
+     */
     private static boolean gameOver = false;
 
     public static void main(String[] args) {
 
-        System.out.println("Welcome to Minesweeper!");
+        logger.info("Welcome to Minesweeper!\n");
 
         final MineSweeperService service = new MineSweeperService();
         Scanner scanner = new Scanner(System.in);
 
         playGame(service, scanner);
-        System.out.println("Press any key to play again...");
-
+        logger.info("Press any key to play again...\n");
 
     }
 
     /**
      * @param service - the service
-     * @param scanner
+     * @param scanner - the scanner
      */
     public static void playGame(final MineSweeperService service, final Scanner scanner) {
-        System.out.println("Enter the size of the grid (e.g. 4 for a 4x4 grid): ");
+
+        logger.info("Enter the size of the grid (e.g. 4 for a 4x4 grid):");
         int gridSize = scanner.nextInt();
 
-        System.out.println("Enter the number of mines to place on the grid (maximum is 35% of the total squares):");
+        logger.info("Enter the number of mines to place on the grid (maximum is 35% of the total squares): \n");
         int mineCount = scanner.nextInt();
 
         final Board board = service.createBoard(gridSize, gridSize, mineCount);
 
+        logger.info("Here is your minefield: \n");
         service.printBoard(board, false);
 
         while (!gameOver && !service.isAllOpen(board.getGrid(), gridSize, gridSize)) {
-            System.out.println("THE VALUE " + gameOver);
-            System.out.print("Select a square to reveal (e.g. A1): ");
+            logger.info("Select a square to reveal (e.g. A1): \n");
             final String input = scanner.next();
 
             if (service.hasMine(board, input)) {
                 gameOver = true;
-                System.out.println("Oh no, you detonated a mine! Game over.");
+                logger.info("Oh no, you detonated a mine! Game over. \n");
                 service.printBoard(board, true);
             } else {
                 service.showBlock(board, input);
-                System.out.println("Here is your updated minefield:");
+                logger.info("Here is your updated minefield: \n");
                 service.printBoard(board, false);
             }
         }
