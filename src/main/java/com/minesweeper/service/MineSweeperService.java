@@ -2,17 +2,25 @@ package com.minesweeper.service;
 
 import com.minesweeper.model.Block;
 import com.minesweeper.model.Board;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Random;
-import java.util.logging.Logger;
 
 /**
  * This class contains minesweeper game logic methods.
  */
 public class MineSweeperService {
 
-    // This is used to name each row
-    final static String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    /**
+     * The logger.
+     */
+    private static final Logger logger = LoggerFactory.getLogger(MineSweeperService.class);
+
+    /**
+     * The alphabet string.
+     */
+    private static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     /**
      * This method will create a game board with mines & numbers.
@@ -23,7 +31,6 @@ public class MineSweeperService {
      * @return {@link com.minesweeper.model.Board}
      */
     public Board createBoard(int rowCount, int columnCount, int mineCount) {
-        Logger.getLogger("Hello");
         Board board = new Board(rowCount, columnCount, mineCount);
 
         //Populate each item in grid
@@ -51,33 +58,45 @@ public class MineSweeperService {
     public void printBoard(final Board board, boolean revealAll) {
 
         //Used to print header
-        int header = 0;
-        while (header <= board.getColumnCount()) {
-            if (header == 0) {
-                System.out.print("  ");
-            } else {
-                System.out.print(header + " ");
-            }
-            header++;
-        }
-        System.out.println();
+        populateHeader(board);
+
         for (int row = 0; row < board.getRowCount(); row++) {
-            System.out.print(ALPHABET.charAt(row) + " ");
+
+            logger.info("{} ", ALPHABET.charAt(row));
+
             for (int col = 0; col < board.getColumnCount(); col++) {
                 Block cell = board.getGrid()[row][col];
                 if (revealAll || cell.isRevealed()) {
                     if (cell.isMine()) {
-                        System.out.print("* ");
+                        logger.info("* ");
                     } else {
-                        System.out.print(cell.getAdjacentMines() + " ");
+                        logger.info("{} ", cell.getAdjacentMines());
                     }
                 } else {
 
-                    System.out.print("_ ");
+                    logger.info("_ ");
                 }
             }
-            System.out.println();
+            logger.info("\n");
         }
+    }
+
+    /**
+     * This method is used to print the header.
+     *
+     * @param board - the board
+     */
+    private void populateHeader(final Board board) {
+        int header = 0;
+        while (header <= board.getColumnCount()) {
+            if (header == 0) {
+                logger.info("  ");
+            } else {
+                logger.info("{} ", header);
+            }
+            header++;
+        }
+        logger.info("\n");
     }
 
     /**
@@ -98,17 +117,24 @@ public class MineSweeperService {
         }
     }
 
-    public void showBlock(Board board, int row, int col) {
+    /**
+     * This method will display a block value.
+     *
+     * @param board  - the board
+     * @param row    - the row number
+     * @param column - the column number
+     */
+    public void showBlock(Board board, int row, int column) {
         final Block[][] grid = board.getGrid();
-        if (isValidBlock(board, row, col) && !grid[row][col].isRevealed()) {
-            grid[row][col].setRevealed(true);
-            if (grid[row][col].getAdjacentMines() == 0 && !grid[row][col].isMine()) {
-                showAdjacentBlocks(board, row, col);
+        if (isValidBlock(board, row, column) && !grid[row][column].isRevealed()) {
+            grid[row][column].setRevealed(true);
+            if (grid[row][column].getAdjacentMines() == 0 && !grid[row][column].isMine()) {
+                showAdjacentBlocks(board, row, column);
             }
         }
     }
 
-    private void showAdjacentBlocks(final Board board, int row, int col) {
+    private void showAdjacentBlocks(final Board board, int row, int column) {
 
     }
 
@@ -126,7 +152,7 @@ public class MineSweeperService {
         final Block[][] grid = board.getGrid();
         int placedMineCount = 0;
 
-        while (placedMineCount <= mineCount) {
+        while (placedMineCount < mineCount) {
 
             int row = random.nextInt(rowCount);
             int column = random.nextInt(columnCount);
