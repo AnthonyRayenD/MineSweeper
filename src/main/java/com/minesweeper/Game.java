@@ -13,6 +13,7 @@ import java.util.Scanner;
 public class Game {
 
     /**
+     *
      */
     private static final Logger logger = LoggerFactory.getLogger(Game.class);
 
@@ -39,7 +40,7 @@ public class Game {
      */
     public static void playGame(final MineSweeperService service, final Scanner scanner) {
 
-        logger.info("Enter the size of the grid (e.g. 4 for a 4x4 grid):");
+        logger.info("Enter the size of the grid (e.g. 4 for a 4x4 grid):\n");
         int gridSize = scanner.nextInt();
 
         logger.info("Enter the number of mines to place on the grid (maximum is 35% of the total squares): \n");
@@ -48,7 +49,7 @@ public class Game {
         final Board board = service.createBoard(gridSize, gridSize, mineCount);
 
         logger.info("Here is your minefield: \n");
-        service.printBoard(board, false);
+        service.printBoard(board, true);
 
         while (!gameOver && !service.isAllOpen(board.getGrid(), gridSize, gridSize)) {
             logger.info("Select a square to reveal (e.g. A1): \n");
@@ -58,10 +59,16 @@ public class Game {
                 gameOver = true;
                 logger.info("Oh no, you detonated a mine! Game over. \n");
                 service.printBoard(board, true);
+
             } else {
                 service.showBlock(board, input);
                 logger.info("Here is your updated minefield: \n");
                 service.printBoard(board, false);
+            }
+
+            if (service.isAllOpen(board.getGrid(), gridSize, gridSize)) {
+
+                logger.info("Congratulations, you have won the game!\n");
             }
         }
 
