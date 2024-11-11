@@ -29,7 +29,11 @@ public class Game {
         final MineSweeperService service = new MineSweeperService();
         Scanner scanner = new Scanner(System.in);
 
-        playGame(service, scanner);
+        try {
+            playGame(service, scanner);
+        } catch (Exception e) {
+            logger.error("An error occurred during the game: {}", e.getMessage(), e);
+        }
         logger.info("Press any key to play again...\n");
 
     }
@@ -49,7 +53,7 @@ public class Game {
         final Board board = service.createBoard(gridSize, gridSize, mineCount);
 
         logger.info("Here is your minefield: \n");
-        service.printBoard(board, true);
+        service.printBoard(board, false);
 
         while (!gameOver && !service.isAllOpen(board.getGrid(), gridSize, gridSize)) {
             logger.info("Select a square to reveal (e.g. A1): \n");
