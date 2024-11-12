@@ -135,7 +135,11 @@ public class MineSweeperService {
     }
 
     private void showAdjacentBlocks(final Board board, int row, int column) {
-
+        for (int r = row - 1; r <= row + 1; r++) {
+            for (int c = column - 1; c <= column + 1; c++) {
+                showBlock(board, r, c);
+            }
+        }
     }
 
     /**
@@ -177,7 +181,12 @@ public class MineSweeperService {
      * @param column - the column number
      */
     private void updateAdjacentBlocks(final Board board, int row, int column) {
-
+        final Block[][] grid = board.getGrid();
+        for (int adjRow = row - 1; adjRow <= row + 1; adjRow++) {
+            for (int col = column - 1; col <= column + 1; col++) {
+                grid[adjRow][col].setAdjacentMines(grid[adjRow][col].getAdjacentMines() + 1);
+            }
+        }
     }
 
     /**
