@@ -1,6 +1,7 @@
 package com.minesweeper.service;
 
 import com.minesweeper.common.CommonUtils;
+import com.minesweeper.exceptions.NotFoundException;
 import com.minesweeper.model.Block;
 import com.minesweeper.model.Board;
 import org.slf4j.Logger;
@@ -154,9 +155,12 @@ public class GameBoardService {
      * @param blockId - the blockId
      * @return true if block is Mine
      */
-    public boolean hasMine(final Board board, final String blockId) {
+    public boolean hasMine(final Board board, final String blockId) throws NotFoundException {
         final int row = CommonUtils.getRow(blockId);
         final int column = CommonUtils.getColumn(blockId);
+        if (row == -1 || column == -1 || column > board.getColumnCount() - 1) {
+            throw new NotFoundException("No Blocks Found");
+        }
         return board.getGrid()[row][column].isMine();
     }
 

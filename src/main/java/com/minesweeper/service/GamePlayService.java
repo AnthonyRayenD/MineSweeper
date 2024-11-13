@@ -1,6 +1,7 @@
 package com.minesweeper.service;
 
 import com.minesweeper.common.CommonUtils;
+import com.minesweeper.exceptions.NotFoundException;
 import com.minesweeper.model.Block;
 import com.minesweeper.model.Board;
 import org.slf4j.Logger;
@@ -51,18 +52,34 @@ public class GamePlayService {
     /**
      * This method handles the game play
      */
-    public void playGame() {
+    public void playGame() throws NotFoundException {
 
         logger.info(languageService.getMessage("greeting"));
 
         logger.info(languageService.getMessage("enterGridSize"));
         int gridSize = scanner.nextInt();
 
+        int mineCount;
         logger.info(languageService.getMessage("enterMineNumber"));
-        int mineCount = scanner.nextInt();
+        mineCount = scanner.nextInt();
 
+        // Validate mine count
+        while (!CommonUtils.validateMineCount(gridSize, mineCount)) {
+            logger.info(languageService.getMessage("invalidMineNumber"));
+            logger.info(languageService.getMessage("enterMineNumber"));
+            mineCount = scanner.nextInt();
+        }
+        playGame(gridSize, mineCount);
+    }
+
+    /**
+     * This method will play game
+     *
+     * @param gridSize - the grid size
+     * @param mineCount - the mine count
+     */
+    private void playGame(final int gridSize, final int mineCount) throws NotFoundException {
         final Board board = gameBoardService.createBoard(gridSize, gridSize, mineCount);
-
         logger.info(languageService.getMessage("displayMineField"));
         gameBoardService.printBoard(board, false);
 
@@ -86,7 +103,6 @@ public class GamePlayService {
                 logger.info(languageService.getMessage("successMessage"));
             }
         }
-
     }
 
     /**

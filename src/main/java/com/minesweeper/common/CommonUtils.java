@@ -10,6 +10,7 @@ import static com.minesweeper.service.GameBoardService.ALPHABET;
 public final class CommonUtils {
 
     /**
+     *
      */
     private CommonUtils() {
         //Do nothing
@@ -34,7 +35,14 @@ public final class CommonUtils {
      */
     public static int getColumn(String blockId) {
         final String columnString = blockId.substring(1);
-        return Integer.parseInt(columnString) - 1;
+
+        try {
+            return Integer.parseInt(columnString) - 1;
+
+        } catch (NumberFormatException numberFormatException) {
+            return -1;
+        }
+
     }
 
     /**
@@ -47,5 +55,18 @@ public final class CommonUtils {
      */
     public static boolean isValidBlock(final Board board, int row, int col) {
         return row >= 0 && row < board.getRowCount() && col >= 0 && col < board.getColumnCount();
+    }
+
+    /**
+     * This will validate the mine count which should not be more than 35% of the grid size
+     *
+     * @param gridSize  - the grid size
+     * @param mineCount - the mine count
+     * @return true if valid
+     */
+    public static boolean validateMineCount(final int gridSize, final int mineCount) {
+        final int totalBlocks = gridSize * gridSize;
+        final int maxMineCount = totalBlocks * 35 / 100;
+        return mineCount <= maxMineCount;
     }
 }
