@@ -1,11 +1,11 @@
 package com.minesweeper;
 
-import com.minesweeper.model.Board;
-import com.minesweeper.service.MineSweeperService;
+import com.minesweeper.service.GamePlayService;
+import com.minesweeper.service.LanguageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Scanner;
+import java.util.Locale;
 
 /**
  * The main class
@@ -18,63 +18,30 @@ public class Game {
     private static final Logger logger = LoggerFactory.getLogger(Game.class);
 
     /**
-     * The game status.
+     * The game play service.
      */
-    private static boolean gameOver = false;
-
-    public static void main(String[] args) {
-
-        logger.info("Welcome to Minesweeper!\n");
-
-        final MineSweeperService service = new MineSweeperService();
-        Scanner scanner = new Scanner(System.in);
-
-        try {
-            playGame(service, scanner);
-        } catch (Exception e) {
-            logger.error("An error occurred during the game: {}", e.getMessage(), e);
-        }
-        logger.info("Press any key to play again...\n");
-
-    }
+    private static GamePlayService gamePlayService;
 
     /**
-     * @param service - the service
-     * @param scanner - the scanner
+     * The main method
+     *
+     * @param args - the args
      */
-    public static void playGame(final MineSweeperService service, final Scanner scanner) {
+    public static void main(String[] args) {
 
-        logger.info("Enter the size of the grid (e.g. 4 for a 4x4 grid):\n");
-        int gridSize = scanner.nextInt();
+        LanguageService languageService = new LanguageService(Locale.ENGLISH);
 
-        logger.info("Enter the number of mines to place on the grid (maximum is 35% of the total squares): \n");
-        int mineCount = scanner.nextInt();
+        logger.info(languageService.getMessage("greeting"));
 
-        final Board board = service.createBoard(gridSize, gridSize, mineCount);
+        try {
+            gamePlayService.playGame();
 
-        logger.info("Here is your minefield: \n");
-        service.printBoard(board, false);
+        } catch (Exception e) {
 
-        while (!gameOver && !service.isAllOpen(board.getGrid(), gridSize, gridSize)) {
-            logger.info("Select a square to reveal (e.g. A1): \n");
-            final String input = scanner.next();
-
-            if (service.hasMine(board, input)) {
-                gameOver = true;
-                logger.info("Oh no, you detonated a mine! Game over. \n");
-                service.printBoard(board, true);
-
-            } else {
-                service.showBlock(board, input);
-                logger.info("Here is your updated minefield: \n");
-                service.printBoard(board, false);
-            }
-
-            if (service.isAllOpen(board.getGrid(), gridSize, gridSize)) {
-
-                logger.info("Congratulations, you have won the game!\n");
-            }
+            logger.error("An error occurred during the game: {}", e.getMessage(), e);
         }
+
+        logger.info(languageService.getMessage("playAgainMessage"));
 
     }
 }
