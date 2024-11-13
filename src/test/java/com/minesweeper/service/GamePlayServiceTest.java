@@ -7,18 +7,23 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 /**
- * This class contains test cases related to MineSweeperService.
+ * This class contains test cases related to GamePlayService.
  */
-class MineSweeperServiceTest {
+class GamePlayServiceTest {
 
     /**
-     * The mineSweeperService.
+     * The gameBoardService.
      */
-    private static MineSweeperService mineSweeperService;
+    private GamePlayService gamePlayService;
+
+    /**
+     * The gameBoardService.
+     */
+    private static GameBoardService gameBoardService;
 
     @BeforeAll
     static void setup() {
-        mineSweeperService = new MineSweeperService();
+        gameBoardService = new GameBoardService();
     }
 
     /**
@@ -47,7 +52,7 @@ class MineSweeperServiceTest {
         final int mineCount = 3;
         final Board board = createBoard(row, column, mineCount);
 
-        mineSweeperService.showBlock(board, 3, 3);
+        gamePlayService.showBlock(board, 3, 3);
         final Block block = board.getGrid()[3][3];
         Assertions.assertTrue(block.isRevealed());
     }
@@ -63,7 +68,7 @@ class MineSweeperServiceTest {
         final int mineCount = 3;
         final Board board = createBoard(row, column, mineCount);
 
-        mineSweeperService.showBlock(board, "A4");
+        gamePlayService.showBlock(board, "A4");
         final Block block = board.getGrid()[0][3];
         Assertions.assertTrue(block.isRevealed());
     }
@@ -77,6 +82,6 @@ class MineSweeperServiceTest {
      * @return {@link com.minesweeper.model.Board}
      */
     private Board createBoard(final int row, final int column, final int mineCount) {
-        return mineSweeperService.createBoard(row, column, mineCount);
+        return gameBoardService.createBoard(row, column, mineCount);
     }
 }

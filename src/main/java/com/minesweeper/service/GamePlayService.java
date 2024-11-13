@@ -30,22 +30,21 @@ public class GamePlayService {
     private final LanguageService languageService;
 
     /**
-     * The MineSweeperService
+     * The GameBoardService
      */
-    private final MineSweeperService mineSweeperService;
+    private final GameBoardService gameBoardService;
 
     /**
      * The scanner
      */
     private final Scanner scanner;
 
-
     /**
      *
      */
     public GamePlayService(final Locale locale) {
         languageService = new LanguageService(locale);
-        mineSweeperService = new MineSweeperService();
+        gameBoardService = new GameBoardService();
         scanner = new Scanner(System.in);
     }
 
@@ -62,27 +61,27 @@ public class GamePlayService {
         logger.info(languageService.getMessage("enterMineNumber"));
         int mineCount = scanner.nextInt();
 
-        final Board board = mineSweeperService.createBoard(gridSize, gridSize, mineCount);
+        final Board board = gameBoardService.createBoard(gridSize, gridSize, mineCount);
 
         logger.info(languageService.getMessage("displayMineField"));
-        mineSweeperService.printBoard(board, false);
+        gameBoardService.printBoard(board, false);
 
-        while (!gameOver && !mineSweeperService.isAllOpen(board.getGrid(), gridSize, gridSize)) {
+        while (!gameOver && !gameBoardService.isAllOpen(board.getGrid(), gridSize, gridSize)) {
             logger.info(languageService.getMessage("selectMessage"));
             final String input = scanner.next();
 
-            if (mineSweeperService.hasMine(board, input)) {
+            if (gameBoardService.hasMine(board, input)) {
                 gameOver = true;
                 logger.info(languageService.getMessage("failureMessage"));
-                mineSweeperService.printBoard(board, true);
+                gameBoardService.printBoard(board, true);
 
             } else {
                 showBlock(board, input);
                 logger.info(languageService.getMessage("displayUpdatedField"));
-                mineSweeperService.printBoard(board, false);
+                gameBoardService.printBoard(board, false);
             }
 
-            if (mineSweeperService.isAllOpen(board.getGrid(), gridSize, gridSize)) {
+            if (gameBoardService.isAllOpen(board.getGrid(), gridSize, gridSize)) {
 
                 logger.info(languageService.getMessage("successMessage"));
             }

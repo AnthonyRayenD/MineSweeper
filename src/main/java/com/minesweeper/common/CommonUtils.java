@@ -2,7 +2,7 @@ package com.minesweeper.common;
 
 import com.minesweeper.model.Board;
 
-import static com.minesweeper.service.MineSweeperService.ALPHABET;
+import static com.minesweeper.service.GameBoardService.ALPHABET;
 
 /**
  * This class contains common methods

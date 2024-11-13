@@ -11,12 +11,12 @@ import java.util.Random;
 /**
  * This class contains minesweeper game logic methods.
  */
-public class MineSweeperService {
+public class GameBoardService {
 
     /**
      * The logger.
      */
-    private static final Logger logger = LoggerFactory.getLogger(MineSweeperService.class);
+    private static final Logger logger = LoggerFactory.getLogger(GameBoardService.class);
 
     /**
      * The alphabet string.
