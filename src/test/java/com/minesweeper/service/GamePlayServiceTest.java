@@ -4,7 +4,10 @@ import com.minesweeper.model.Block;
 import com.minesweeper.model.Board;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Locale;
 
 /**
  * This class contains test cases related to GamePlayService.
@@ -19,10 +22,11 @@ class GamePlayServiceTest {
     /**
      * The gameBoardService.
      */
-    private static GameBoardService gameBoardService;
+    private GameBoardService gameBoardService;
 
-    @BeforeAll
-    static void setup() {
+    @BeforeEach
+    void setup() {
+        gamePlayService = new GamePlayService(Locale.ENGLISH);
         gameBoardService = new GameBoardService();
     }
 
