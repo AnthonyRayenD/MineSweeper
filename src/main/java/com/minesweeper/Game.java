@@ -29,11 +29,11 @@ public class Game {
      */
     public static void main(String[] args) {
 
-        LanguageService languageService = new LanguageService(Locale.ENGLISH);
+        final LanguageService languageService = new LanguageService(Locale.ENGLISH);
 
-        logger.info(languageService.getMessage("greeting"));
-
+        gamePlayService = new GamePlayService(Locale.ENGLISH);
         try {
+            //Start game play
             gamePlayService.playGame();
 
         } catch (Exception e) {

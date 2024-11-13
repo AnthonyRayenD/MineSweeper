@@ -54,6 +54,8 @@ public class GamePlayService {
      */
     public void playGame() {
 
+        logger.info(languageService.getMessage("greeting"));
+
         logger.info(languageService.getMessage("enterGridSize"));
         int gridSize = scanner.nextInt();
 
